@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jan Suraksha Extension</title>
+    <link rel="stylesheet" href="detector.css">
+<body>
+    <div class="status-bar">
+        <span>9:41 AM</span>
+        <span>Scam Detector Extension</span>
+        <div class="extension-status">
+            <div class="status-dot active" id="statusDot"></div>
+            <span id="statusText">ON</span>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <div class="extension-status-card enabled" id="extensionCard">
+                <div class="status-card-content">
+                    <div class="status-info">
+                        <div class="status-indicator active" id="statusIndicator"></div>
+                        <div class="status-text">
+                            <h3>Extension Status</h3>
+                            <p id="statusDescription">Actively monitoring apps</p>
+                        </div>
+                    </div>
+                    <button class="toggle-btn enabled" id="toggleExtension">ON</button>
+                </div>
+            </div>
+
+            <div class="hero-section">
+                <div class="hero-icon">🛡️</div>
+                <h1 class="hero-title">Jan Suraksha</h1>
+                <p class="hero-subtitle">Mobile Extension Protection</p>
+            </div>
+
+            <div class="search-section">
+                <div class="search-input-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Manually check URL, UPI ID, or text...">
+                    <div class="search-icon">🔍</div>
+                </div>
+            </div>
+
+            <button class="scan-btn" id="scanBtn">Manual Scan</button>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon safe">✅</div>
+                        <div>
+                            <div class="stat-number safe" id="safeCount">2</div>
+                            <div class="stat-label">Safe Links</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon danger">⚠️</div>
+                        <div>
+                            <div class="stat-number danger" id="scamCount">2</div>
+                            <div class="stat-label">Blocked Scams</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Page -->
+        <div id="historyPage" class="page">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('home')">←</button>
+                <div class="header-info">
+                    <h1>Scan History</h1>
+                    <p>Review your past scans and results</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settingsPage" class="page">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('home')">←</button>
+                <div class="header-info">
+                    <h1>Settings</h1>
+                    <p>Customize your protection</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <button class="nav-item active" onclick="navigateTo('home')">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('history')">
+                <span class="nav-icon">�</span>
+                <span class="nav-label">History</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('settings')">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Settings</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Scan Popup -->
+    <div class="popup-overlay hidden" id="scanPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <div class="popup-title">
+                    <div class="popup-icon detection">🔍</div>
+                    <div>
+                        <h2 class="popup-result">Scanning...</h2>
+                        <span class="popup-subtitle">Please wait while we analyze</span>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closePopup()">×</button>
+            </div>
+            <div class="popup-content">
+                <div class="popup-content-header">Input</div>
+                <div class="popup-input" id="scanInput"></div>
+                <div class="popup-badges">
+                    <span class="badge type">URL</span>
+                    <span class="badge app">WhatsApp</span>
+                </div>
+            </div>
+            <div class="popup-analysis hidden" id="analysisResult">
+                <!-- This will be populated by JavaScript -->
+            </div>
+            <div class="popup-actions">
+                <button class="popup-btn primary detection" onclick="startScan()">Start Scan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Popup - Safe -->
+    <div class="popup-overlay hidden" id="safePopup">
+        <div class="popup">
+            <div class="popup-header">
+                <div class="popup-title">
+                    <div class="popup-icon safe">✅</div>
+                    <div>
+                        <h2 class="popup-result safe">Safe Content</h2>
+                        <span class="popup-subtitle">No threats detected</span>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closePopup('safePopup')">×</button>
+            </div>
+            <div class="popup-content">
+                <div class="popup-content-header">Analyzed Content</div>
+                <div class="popup-input" id="safeContent"></div>
+                <div class="popup-badges">
+                    <span class="badge type" id="safeType">URL</span>
+                    <span class="badge app" id="safeApp">WhatsApp</span>
+                </div>
+            </div>
+            <div class="popup-analysis safe">
+                <div class="popup-reasons safe">
+                    <ul>
+                        <li>Legitimate domain verified</li>
+                        <li>SSL certificate valid</li>
+                        <li>No suspicious patterns found</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="popup-actions">
+                <button class="popup-btn primary safe" onclick="closePopup('safePopup')">Continue Safely</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Popup - Scam -->
+    <div class="popup-overlay hidden" id="scamPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <div class="popup-title">
+                    <div class="popup-icon scam">⚠️</div>
+                    <div>
+                        <h2 class="popup-result scam">Scam Detected!</h2>
+                        <span class="popup-subtitle">This content may be dangerous</span>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closePopup('scamPopup')">×</button>
+            </div>
+            <div class="popup-content">
+                <div class="popup-content-header">Suspicious Content</div>
+                <div class="popup-input" id="scamContent"></div>
+                <div class="popup-badges">
+                    <span class="badge type" id="scamType">URL</span>
+                    <span class="badge app" id="scamApp">WhatsApp</span>
+                </div>
+            </div>
+            <div class="popup-analysis scam">
+                <div class="popup-reasons scam">
+                    <ul>
+                        <li>Known scam patterns detected</li>
+                        <li>Suspicious domain structure</li>
+                        <li>Potential phishing attempt</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="popup-actions">
+                <button class="popup-btn primary scam" onclick="blockContent()">Block Content</button>
+                <div class="popup-btn-group">
+                    <button class="popup-btn secondary block" onclick="reportScam()">Report Scam</button>
+                    <button class="popup-btn secondary allow" onclick="proceedAnyway()">Proceed Anyway</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
