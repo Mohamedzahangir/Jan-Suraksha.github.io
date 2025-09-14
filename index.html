@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jan Suraksha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="detector.css">
+</head>
+<body>
+    <div class="status-bar">
+        <div class="extension-status">
+            <div class="status-dot active"></div>
+            <span>Link Scam Detector is active</span>
+        </div>
+        <span>v1.0.0</span>
+    </div>
+
+    <div class="app-container">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="hero-section">
+                <div class="hero-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1 class="hero-title">Jan Suraksha</h1>
+                <p class="hero-subtitle">Check if a link is safe before you click</p>
+            </div>
+
+            <div class="search-section">
+                <div class="search-input-container">
+                    <input type="text" class="search-input" placeholder="Enter a link to check...">
+                    <i class="fas fa-link search-icon"></i>
+                </div>
+                <button class="scan-btn" disabled>
+                    <i class="fas fa-shield-alt"></i>&nbsp;
+                    Scan Link
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon safe">✅</div>
+                        <div>
+                            <div class="stat-number safe">125</div>
+                            <div class="stat-label">Safe links checked</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon danger">⚠️</div>
+                        <div>
+                            <div class="stat-number danger">8</div>
+                            <div class="stat-label">Scams blocked</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Page -->
+        <div id="history" class="page">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="header-info">
+                    <h1>Detection History</h1>
+                    <p id="historyCount">4 total scans</p>
+                </div>
+            </div>
+
+            <div id="historyList">
+                <div class="history-item scam">
+                    <div class="history-header">
+                        <div class="history-main">
+                            <div class="history-icon scam">⚠️</div>
+                            <div>
+                                <div class="history-result scam">Scam</div>
+                                <div class="history-badges">
+                                    <span class="badge type">URL</span>
+                                    <span class="badge app">💬 WhatsApp</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="history-actions">
+                            <button class="action-btn rescan">
+                                <i class="fas fa-redo-alt"></i>
+                            </button>
+                            <button class="action-btn delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="history-content">https://free-gift-amazon.com/claim</div>
+                    <div class="history-footer">
+                        <div class="history-reasons scam">
+                            • Reported fake domain<br>
+                            • Suspicious pattern
+                        </div>
+                        <div class="history-timestamp">2024-09-13 12:15</div>
+                    </div>
+                </div>
+
+                <div class="history-item safe">
+                    <div class="history-header">
+                        <div class="history-main">
+                            <div class="history-icon safe">✅</div>
+                            <div>
+                                <div class="history-result safe">Safe</div>
+                                <div class="history-badges">
+                                    <span class="badge type">URL</span>
+                                    <span class="badge app">🌐 Chrome</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="history-actions">
+                            <button class="action-btn rescan">
+                                <i class="fas fa-redo-alt"></i>
+                            </button>
+                            <button class="action-btn delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="history-content">https://google.com</div>
+                    <div class="history-footer">
+                        <div class="history-reasons safe">
+                            • Legitimate domain<br>
+                            • SSL verified
+                        </div>
+                        <div class="history-timestamp">2024-09-13 10:45</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings" class="page">
+            <div class="hero-section">
+                <div class="hero-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <h1 class="hero-title">Settings</h1>
+                <p class="hero-subtitle">Configure extension settings</p>
+            </div>
+
+            <div class="extension-status-card enabled">
+                <div class="status-card-content">
+                    <div class="status-info">
+                        <div class="status-indicator active"></div>
+                        <div class="status-text">
+                            <h3>Link Protection</h3>
+                            <p>Check links for potential scams</p>
+                        </div>
+                    </div>
+                    <button class="toggle-btn enabled">Enabled</button>
+                </div>
+            </div>
+
+            <div class="extension-status-card disabled">
+                <div class="status-card-content">
+                    <div class="status-info">
+                        <div class="status-indicator inactive"></div>
+                        <div class="status-text">
+                            <h3>Auto Block</h3>
+                            <p>Block dangerous links automatically</p>
+                        </div>
+                    </div>
+                    <button class="toggle-btn disabled">Disabled</button>
+                </div>
+            </div>
+
+            <div class="app-permissions">
+                <div class="permissions-header">
+                    <h3>App Monitoring Permissions</h3>
+                    <span class="permissions-count" id="permissionsCount">0/0 enabled</span>
+                </div>
+                
+                <div class="permissions-list" id="permissionsList">
+                    <!-- App permissions will be populated by JavaScript -->
+                </div>
+
+                <div class="bulk-actions">
+                    <button class="bulk-btn enable" onclick="enableAllApps()">
+                        <i class="fas fa-check-circle bulk-btn-icon"></i>
+                        Enable All Apps
+                    </button>
+                    
+                    <button class="bulk-btn disable" onclick="disableAllApps()">
+                        <i class="fas fa-times-circle bulk-btn-icon"></i>
+                        Disable All Apps
+                    </button>
+                </div>
+            </div>
+
+            <div class="app-info">
+                <p>Jan Suraksha v1.0.0</p>
+                <p>Real-time protection across all apps</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <button class="nav-item active" data-page="home">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Home</span>
+            </button>
+            <button class="nav-item" data-page="history">
+                <i class="fas fa-history nav-icon"></i>
+                <span class="nav-label">History</span>
+            </button>
+            <button class="nav-item" data-page="settings">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Update navigation items
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                // Show the corresponding page
+                const pageId = item.getAttribute('data-page');
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                    if (page.id === pageId) {
+                        page.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Toggle buttons
+        const toggleBtns = document.querySelectorAll('.toggle-btn');
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const card = btn.closest('.extension-status-card');
+                const indicator = card.querySelector('.status-indicator');
+                
+                if (btn.classList.contains('enabled')) {
+                    btn.classList.remove('enabled');
+                    btn.classList.add('disabled');
+                    btn.textContent = 'Disabled';
+                    card.classList.remove('enabled');
+                    card.classList.add('disabled');
+                    indicator.classList.remove('active');
+                    indicator.classList.add('inactive');
+                } else {
+                    btn.classList.remove('disabled');
+                    btn.classList.add('enabled');
+                    btn.textContent = 'Enabled';
+                    card.classList.remove('disabled');
+                    card.classList.add('enabled');
+                    indicator.classList.remove('inactive');
+                    indicator.classList.add('active');
+                }
+            });
+        });
+
+        // Search input and scan button
+        const searchInput = document.querySelector('.search-input');
+        const scanBtn = document.querySelector('.scan-btn');
+
+        searchInput.addEventListener('input', () => {
+            scanBtn.disabled = !searchInput.value.trim();
+        });
+
+        scanBtn.addEventListener('click', () => {
+            const url = searchInput.value.trim();
+            // Add your URL scanning logic here
+            // Show the scan result popup
+            showManualScanResult(url);
+        });
+
+        // Scan result popup functions
+        function showManualScanResult(url) {
+            const result = detectScam(url);
+            const popup = document.getElementById('manualResultPopup');
+            const icon = document.getElementById('manualPopupIcon');
+            const resultText = document.getElementById('manualPopupResult');
+            const input = document.getElementById('manualPopupInput');
+            const type = document.getElementById('manualPopupType');
+            const time = document.getElementById('manualPopupTime');
+            const analysis = document.getElementById('manualPopupAnalysis');
+            const reasons = document.getElementById('manualPopupReasons');
+            const btn = document.getElementById('manualPopupBtn');
+
+            // Update popup content
+            input.textContent = url;
+            type.textContent = result.type;
+            time.textContent = new Date().toLocaleString();
+            
+            if (result.isScam) {
+                icon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                icon.className = 'popup-icon scam';
+                resultText.className = 'popup-result scam';
+                resultText.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Scam Detected!';
+                analysis.className = 'popup-analysis scam';
+                reasons.className = 'popup-reasons scam';
+                reasons.innerHTML = '<ul>' + result.reasons.map(r => `<li>• ${r}</li>`).join('') + '</ul>';
+                btn.className = 'popup-btn primary scam';
+                btn.textContent = 'Got it, Stay Safe!';
+            } else {
+                icon.innerHTML = '<i class="fas fa-check"></i>';
+                icon.className = 'popup-icon safe';
+                resultText.className = 'popup-result safe';
+                resultText.innerHTML = '<i class="fas fa-check"></i> Safe to Use';
+                analysis.className = 'popup-analysis safe';
+                reasons.className = 'popup-reasons safe';
+                reasons.innerHTML = '<ul>' + result.reasons.map(r => `<li>• ${r}</li>`).join('') + '</ul>';
+                btn.className = 'popup-btn primary safe';
+                btn.textContent = 'Great, Proceed Safely';
+            }
+
+            // Show popup
+            popup.classList.remove('hidden');
+        }
+
+        function detectScam(url) {
+            const suspiciousPatterns = ['free', 'gift', 'prize', 'winner', 'claim', 'urgent', 'crypto'];
+            const isScam = suspiciousPatterns.some(pattern => url.toLowerCase().includes(pattern));
+            
+            return {
+                type: 'URL',
+                isScam,
+                reasons: isScam ? 
+                    ['Suspicious keywords detected', 'Potential phishing attempt'] :
+                    ['No suspicious patterns', 'Domain appears legitimate']
+            };
+        }
+
+        function closeManualPopup() {
+            document.getElementById('manualResultPopup').classList.add('hidden');
+            document.getElementById('searchInput').value = '';
+            document.querySelector('.scan-btn').disabled = true;
+        }
+
+        // App Permissions Management
+        const appPermissions = {
+            'WhatsApp': { enabled: true, icon: '💬', color: 'green', package: 'com.whatsapp' },
+            'Telegram': { enabled: true, icon: '✈️', color: 'blue', package: 'org.telegram.messenger' },
+            'SMS': { enabled: true, icon: '💬', color: 'blue', package: 'com.android.messaging' },
+            'Chrome': { enabled: true, icon: '🌐', color: 'red', package: 'com.android.chrome' },
+            'Firefox': { enabled: false, icon: '🦊', color: 'orange', package: 'org.mozilla.firefox' },
+            'Edge': { enabled: false, icon: '🌐', color: 'blue', package: 'com.microsoft.emmx' },
+            'PayTM': { enabled: true, icon: '💰', color: 'blue', package: 'net.one97.paytm' },
+            'PhonePe': { enabled: true, icon: '💜', color: 'purple', package: 'com.phonepe.app' },
+            'Google Pay': { enabled: true, icon: '💳', color: 'yellow', package: 'com.google.android.apps.nbu.paisa.user' },
+            'Instagram': { enabled: false, icon: '📷', color: 'pink', package: 'com.instagram.android' },
+            'Facebook': { enabled: false, icon: '👥', color: 'blue', package: 'com.facebook.katana' },
+            'Twitter': { enabled: false, icon: '🐦', color: 'blue', package: 'com.twitter.android' },
+            'Gmail': { enabled: true, icon: '📧', color: 'red', package: 'com.google.android.gm' },
+            'Banking Apps': { enabled: true, icon: '🏦', color: 'green', package: 'banking.*' }
+        };
+
+        function populatePermissions() {
+            const permissionsList = document.getElementById('permissionsList');
+            permissionsList.innerHTML = '';
+
+            Object.entries(appPermissions).forEach(([appName, appData]) => {
+                const permissionItem = document.createElement('div');
+                permissionItem.className = 'permission-item';
+                
+                permissionItem.innerHTML = `
+                    <div class="permission-info">
+                        <span class="app-icon">${appData.icon}</span>
+                        <div class="app-details">
+                            <span>${appName}</span>
+                            <p>${appData.package}</p>
+                        </div>
+                    </div>
+                    <div class="permission-toggle ${appData.enabled ? 'active' : 'inactive'}" 
+                         onclick="toggleAppPermission('${appName}')">
+                        <div class="permission-toggle-handle"></div>
+                    </div>
+                `;
+                
+                permissionsList.appendChild(permissionItem);
+            });
+
+            updatePermissionCount();
+        }
+
+        function toggleAppPermission(appName) {
+            appPermissions[appName].enabled = !appPermissions[appName].enabled;
+            populatePermissions();
+        }
+
+        function updatePermissionCount() {
+            const enabledCount = Object.values(appPermissions).filter(app => app.enabled).length;
+            const totalCount = Object.keys(appPermissions).length;
+            document.getElementById('permissionsCount').textContent = `${enabledCount}/${totalCount} enabled`;
+        }
+
+        function enableAllApps() {
+            Object.keys(appPermissions).forEach(app => {
+                appPermissions[app].enabled = true;
+            });
+            populatePermissions();
+        }
+
+        function disableAllApps() {
+            Object.keys(appPermissions).forEach(app => {
+                appPermissions[app].enabled = false;
+            });
+            populatePermissions();
+        }
+
+        // Initialize app permissions on load
+        document.addEventListener('DOMContentLoaded', () => {
+            populatePermissions();
+        });
+    </script>
+
+    <!-- Manual Scan Result Popup -->
+    <div id="manualResultPopup" class="popup-overlay hidden">
+        <div class="popup">
+            <div class="popup-header">
+                <div class="popup-title">
+                    <div class="popup-icon" id="manualPopupIcon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <p class="popup-result" id="manualPopupResult">Scanning Result</p>
+                        <p class="popup-subtitle">Manual Scan Result</p>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeManualPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="popup-content">
+                <p class="popup-content-header">Scanned Content:</p>
+                <div class="popup-input" id="manualPopupInput"></div>
+                <div class="popup-badges">
+                    <span class="badge type" id="manualPopupType">URL</span>
+                    <span class="badge" id="manualPopupTime"></span>
+                </div>
+            </div>
+
+            <div class="popup-analysis" id="manualPopupAnalysis">
+                <p class="popup-content-header">Security Analysis:</p>
+                <div class="popup-reasons" id="manualPopupReasons">
+                    <ul>
+                        <li>• Analyzing...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="popup-btn primary" id="manualPopupBtn" onclick="closeManualPopup()">
+                Got it
+            </button>
+        </div>
+    </div>
+</body>
+</html>
